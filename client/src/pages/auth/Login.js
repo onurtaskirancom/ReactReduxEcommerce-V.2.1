@@ -5,7 +5,20 @@ import { Button } from "antd";
 import { GoogleOutlined, MailOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { googleAuthProvider } from "../../firebase";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const createOrUpdateUser = async (authtoken) => {
+  return await axios.post(
+    `${process.env.REACT_APP_API}/create-or-update-user`,
+    {},
+    {
+      headers: {
+        authtoken,
+      },
+    }
+  );
+};
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("teknolojibeyi24@gmail.com");
@@ -17,7 +30,6 @@ const Login = ({ history }) => {
   useEffect(() => {
     if (user && user.token) history.push("/");
   }, [user]);
-
 
   let dispatch = useDispatch();
 
@@ -31,14 +43,18 @@ const Login = ({ history }) => {
       const { user } = result;
       const idTokenResult = await user.getIdTokenResult();
 
-      dispatch({
-        type: "LOGGED_IN_USER",
-        payload: {
-          email: user.email,
-          token: idTokenResult.token,
-        },
-      });
-      history.push("/");
+      createOrUpdateUser(idTokenResult.token)
+        .then((res) => console.log("CREATE OR UPDATE RES", res))
+        .catch();
+
+      // dispatch({
+      //   type: "LOGGED_IN_USER",
+      //   payload: {
+      //     email: user.email,
+      //     token: idTokenResult.token,
+      //   },
+      // });
+      // history.push("/");
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -129,7 +145,9 @@ const Login = ({ history }) => {
             Login with Google
           </Button>
 
-          <Link to="/forgot/password" className="float-right text-danger">Forgot Password</Link>
+          <Link to='/forgot/password' className='float-right text-danger'>
+            Forgot Password
+          </Link>
         </div>
       </div>
     </div>
