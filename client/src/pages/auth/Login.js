@@ -9,14 +9,14 @@ import { createOrUpdateUser } from "../../functions/auth";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("teknolojibeyi24@gmail.com");
-  const [password, setPassword] = useState("4769130??");
+  const [password, setPassword] = useState("3583513??**");
   const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => ({ ...state }));
 
   useEffect(() => {
     if (user && user.token) history.push("/");
-  }, [user]);
+  }, [user, history]);
 
   let dispatch = useDispatch();
 
