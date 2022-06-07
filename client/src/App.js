@@ -9,13 +9,14 @@ import Home from "./pages/Home";
 import Header from "./components/nav/Header";
 import RegisterComplete from "./pages/auth/RegisterComplete";
 import ForgotPassword from "./pages/auth/ForgotPassword";
-import History from './pages/user/History';
+import History from "./pages/user/History";
 import UserRoute from "./components/routes/UserRoute";
 import AdminRoute from "./components/routes/AdminRoute";
 import Password from "./pages/user/Password";
 import Wishlist from "./pages/user/Wishlist";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import CategoryCreate from "./pages/admin/category/CategoryCreate";
+import CategoryUpdate from "./pages/admin/category/CategoryUpdate";
 
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
@@ -32,19 +33,19 @@ const App = () => {
         console.log("user", user);
 
         currentUser(idTokenResult.token)
-        .then((res) => {
-          dispatch({
-            type: "LOGGED_IN_USER",
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-        })
-        .catch(err => console.log(err));
+          .then((res) => {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: idTokenResult.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+          })
+          .catch((err) => console.log(err));
       }
     });
     // cleanup
@@ -66,6 +67,11 @@ const App = () => {
         <UserRoute exact path='/user/wishlist' component={Wishlist} />
         <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
         <AdminRoute exact path='/admin/category' component={CategoryCreate} />
+        <AdminRoute
+          exact
+          path='/admin/category/:slug'
+          component={CategoryUpdate}
+        />
       </Switch>
     </>
   );
