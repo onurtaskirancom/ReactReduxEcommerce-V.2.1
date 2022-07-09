@@ -6,6 +6,7 @@ import { createProduct } from "../../../functions/product";
 import ProductCreateForm from "../../../components/forms/ProductCreateForm";
 import { getCategories, getCategorySubs } from "../../../functions/category";
 import FileUpload from "../../../components/forms/FileUpload";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const initialState = {
   title: "Macbook Pro",
@@ -16,7 +17,23 @@ const initialState = {
   subs: [],
   shipping: "Yes",
   quantity: "50",
-  images: [],
+  images: [
+    // {
+    //   public_id: "jwrzeubemmypod99e8lz",
+    //   url:
+    //     "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480909/jwrzeubemmypod99e8lz.jpg",
+    // },
+    // {
+    //   public_id: "j7uerlvhog1eic0oyize",
+    //   url:
+    //     "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480912/j7uerlvhog1eic0oyize.jpg",
+    // },
+    // {
+    //   public_id: "ho6wnp7sugyemnmtoogf",
+    //   url:
+    //     "https://res.cloudinary.com/dcqjrwaoi/image/upload/v1599480913/ho6wnp7sugyemnmtoogf.jpg",
+    // },
+  ],
   colors: ["Black", "Brown", "Silver", "White", "Blue"],
   brands: ["Apple", "Samsung", "Microsoft", "Lenovo", "ASUS"],
   color: "White",
@@ -61,10 +78,10 @@ const ProductCreate = () => {
 
   const handleCategoryChange = (e) => {
     e.preventDefault();
-    console.log("CLİCKED CATEGORY", e.target.value);
+    console.log("CLICKED CATEGORY", e.target.value);
     setValues({ ...values, subs: [], category: e.target.value });
     getCategorySubs(e.target.value).then((res) => {
-      console.log("SUB OPTIONS ON CATEGORY CLICK", res);
+      console.log("SUB OPTIONS ON CATGORY CLICK", res);
       setSubOptions(res.data);
     });
     setShowSub(true);
@@ -78,10 +95,14 @@ const ProductCreate = () => {
         </div>
 
         <div className='col-md-10'>
-          <h4>Product create</h4>
+          {loading ? (
+            <LoadingOutlined className='text-danger h1' />
+          ) : (
+            <h4>Product create</h4>
+          )}
           <hr />
 
-          {JSON.stringify(values.images)}
+          {/* {JSON.stringify(values.images)} */}
 
           <div className='p-3'>
             <FileUpload
